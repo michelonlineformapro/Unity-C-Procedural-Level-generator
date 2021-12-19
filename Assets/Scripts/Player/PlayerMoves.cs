@@ -7,7 +7,7 @@ public class PlayerMoves : MonoBehaviour
     // moves
     public float moveSpeed;
     private Rigidbody2D rbr2d;
-    private float moveVelocity = 0;
+    private float moveVelocity = 0f;
     private Animator animator;
     public bool isFacingRight = true;
 
@@ -17,6 +17,9 @@ public class PlayerMoves : MonoBehaviour
     public Transform groundCheck;
     public float jumpForce;
     public bool isGrounded;
+
+    //Kneels
+    private float verticalVelocity = 0f;
 
     //Bombs
     private BombsManager bombsScript;
@@ -57,8 +60,6 @@ public class PlayerMoves : MonoBehaviour
         //A enelever lors du build android : Application.platform == RuntimePlatform.WindowsEditor
         moveVelocity = Input.GetAxisRaw("Horizontal") * moveSpeed * Time.deltaTime;
 
-        
-
             if (moveVelocity > 0)
             {
                 MovesRight();
@@ -71,6 +72,18 @@ public class PlayerMoves : MonoBehaviour
             {
                 rbr2d.velocity = new Vector2(rbr2d.velocity.x, rbr2d.velocity.y);
             }
+
+            verticalVelocity = Input.GetAxisRaw("Vertical");
+                //A Genoux
+            if(verticalVelocity < 0)
+            {
+                animator.SetBool("Kneel", true);
+            }
+            else
+            {
+                animator.SetBool("Kneel", false);
+            }
+
 
             //Le saut
             if (Input.GetButtonDown("Jump") && isGrounded)
