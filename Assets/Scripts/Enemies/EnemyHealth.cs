@@ -24,7 +24,6 @@ public class EnemyHealth : MonoBehaviour
     public Material defaultHitEnemy;
     public GameObject enemy;
 
-    private EnemyLR enemyMoveScript;
 
     void Start()
     {
@@ -112,40 +111,6 @@ public class EnemyHealth : MonoBehaviour
 
         enemyHealth--;
 
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Sword"))
-        {
-
-
-            if (enemyMove.moveRight)
-            {
-                knockBackRight();
-
-            }
-            else
-            {
-                knockBackLeft();
-
-            }
-
-        }
-    }
-
-    void knockBackRight()
-    {
-       
-        rb2d.velocity = new Vector2(transform.position.x + 1f, transform.position.y + 1f);
-        killEnemy();
-    }
-
-    void knockBackLeft()
-    {
-      
-        rb2d.velocity = new Vector2(transform.position.x - 1f, transform.position.y + 1f);
-        killEnemy();
     }
 }
 

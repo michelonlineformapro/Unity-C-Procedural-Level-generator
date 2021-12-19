@@ -14,6 +14,13 @@ public class EnemyLR : MonoBehaviour
     private PlayerMoves player;
     private EnemyHealth health;
 
+    //knockBack
+    public float knockBack = 3f; // force x et  y  = 3
+    public float knockBackCount = 0f;// = 0
+    public float knockbackLenght = 0.25f;// temps 0.25s
+    public bool knockFromRight;
+
+    //KnockBack Fx
 
     void Start()
     {
@@ -52,9 +59,64 @@ public class EnemyLR : MonoBehaviour
             moveRight = true;
             this.transform.localScale = new Vector3((transform.localScale.x == 1f) ? 1f : 1f, 1f, 1f);
         }
-    }
-}
 
+
+        //KnockBack
+        //knockback droite et gauche
+        if (knockBackCount <= 0)
+        {
+            rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y);
+        }
+        else
+        {
+            if (knockFromRight)
+            {
+                rb2d.velocity = new Vector2(-knockBack, knockBack);
+            }
+            if (!knockFromRight)
+            {
+                rb2d.velocity = new Vector2(knockBack, knockBack);
+            }
+            knockBackCount -= Time.deltaTime;
+        }
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Sword"))
+        {
+
+
+            if (moveRight)
+            {
+                knockBackRight();
+
+            }
+
+            if (!moveRight)
+            {
+                knockBackLeft();
+            }
+
+        }
+    }
+
+    void knockBackRight()
+    {
+       
+        rb2d.velocity = new Vector2(-knockBack, knockBack);
+        health.killEnemy();
+    }
+
+    void knockBackLeft()
+    {
+       
+        rb2d.velocity = new Vector2(knockBack, knockBack);
+        health.killEnemy();
+    }
+
+}
 
 
 

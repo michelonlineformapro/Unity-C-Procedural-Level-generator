@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8998398175288321247}
   - component: {fileID: 468416148497283622}
   - component: {fileID: 468416148497283617}
+  - component: {fileID: 3254396755736729019}
   m_Layer: 0
   m_Name: Coin_Solid_bounce
   m_TagString: Untagged
@@ -168,3 +169,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.1867547, y: 0.37470245}
   m_EdgeRadius: 0
+--- !u!114 &3254396755736729019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3146281773253095640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e87c6fa6041bf0479eab5212652ce06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinSound: {fileID: 8300000, guid: 776a6e657060771458ff8bf23254b6f9, type: 3}
+  plusUnObject: {fileID: 7191580438920857854, guid: 240f797f56546ca40a0fc2c9d4813f29, type: 3}
