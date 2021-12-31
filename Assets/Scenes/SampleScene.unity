@@ -6202,7 +6202,7 @@ RectTransform:
   m_Children:
   - {fileID: 1357909999}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -24202,7 +24202,7 @@ MonoBehaviour:
   - {fileID: 352577387}
   - {fileID: 1931817238}
   rooms:
-  - {fileID: 2519457336900190166, guid: f267120f63a89ca45b855255d3dd153e, type: 3}
+  - {fileID: 2519457336900190166, guid: 4078259537fa3d74bb2ffdfb089e3dd0, type: 3}
   - {fileID: 8056727299823208096, guid: a5804b1897c57824880f9b20b30ff9e0, type: 3}
   - {fileID: 3794898089156370164, guid: a1658ce066641f64c862aabaf74f839d, type: 3}
   - {fileID: 1022682505494149208, guid: b2b9e71b69477c247bdaf25588553bb0, type: 3}
@@ -24421,7 +24421,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7737406588279362692, guid: 95b56ea68d3b3b644974a7bf8f10d21c, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7737406588279362692, guid: 95b56ea68d3b3b644974a7bf8f10d21c, type: 3}
       propertyPath: m_AnchorMax.x
