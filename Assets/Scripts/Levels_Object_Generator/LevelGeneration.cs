@@ -36,9 +36,13 @@ public class LevelGeneration : MonoBehaviour
     //Decompter le type de piece
     private int downCounter;
 
+    //Script type de piece
+    private RoomType roomType;
+
 
     void Start()
     {
+        roomType = FindObjectOfType<RoomType>();
         //Random des positions
         int randStartingPosition = Random.Range(0, startingposition.Length);
         //Position de depart randomisée
@@ -135,20 +139,20 @@ public class LevelGeneration : MonoBehaviour
                 Collider2D roomDetection = Physics2D.OverlapCircle(transform.position, 1, room);
 
                 //Dans une condition on recup le type de piece du prefab grace au script roomType
-                if (roomDetection.GetComponent<RoomType>().type != 1 && roomDetection.GetComponent<RoomType>().type != 3)
+                if (roomDetection.GetComponentInParent<RoomType>().type != 1 && roomDetection.GetComponentInParent<RoomType>().type != 3)
                 {
 
                     //Si downCounter est > a 2 on instance une  piece a 4 sortie (si 3 LRBT)
                     if (downCounter >= 2)
                     {
                         //On detruit la mauvaise piece et on remplace avec LRBT
-                        roomDetection.GetComponent<RoomType>().RoomDestruction();
+                        roomDetection.GetComponentInParent<RoomType>().RoomDestruction();
                         Instantiate(rooms[3], transform.position, transform.rotation);
                     }
                     else
                     {
                         //Si c pas LRB et LRBT = on detruit la piece pour la remplacer
-                        roomDetection.GetComponent<RoomType>().RoomDestruction();
+                        roomDetection.GetComponentInParent<RoomType>().RoomDestruction();
 
                         //On la remplace par 1 ou 3
                         int randBottomRoom = Random.Range(1, 4);
