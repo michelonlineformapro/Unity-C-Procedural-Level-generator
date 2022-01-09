@@ -25,6 +25,12 @@ public class PlayerMoves : MonoBehaviour
     private BombsManager bombsScript;
     public GameObject bombs;
 
+    //Ropes
+    public GameObject ropes;
+    public AudioClip ropesSound;
+    public bool isRope = false;
+    public float climbSpeed;
+
     //knockBack
     public float knockBack = 3f; // force x et  y  = 3
     public float knockBackCount = 0f;// = 0
@@ -60,70 +66,92 @@ public class PlayerMoves : MonoBehaviour
         //A enelever lors du build android : Application.platform == RuntimePlatform.WindowsEditor
         moveVelocity = Input.GetAxisRaw("Horizontal") * moveSpeed * Time.deltaTime;
 
-            if (moveVelocity > 0)
-            {
-                MovesRight();
-            }
-            else if (moveVelocity < 0)
-            {
-                MovesLeft();
-            }
-            else
-            {
-                rbr2d.velocity = new Vector2(rbr2d.velocity.x, rbr2d.velocity.y);
-            }
+        if (moveVelocity > 0)
+        {
+            MovesRight();
+        }
+        else if (moveVelocity < 0)
+        {
+            MovesLeft();
+        }
+        else
+        {
+            rbr2d.velocity = new Vector2(rbr2d.velocity.x, rbr2d.velocity.y);
+        }
 
-            verticalVelocity = Input.GetAxisRaw("Vertical");
-                //A Genoux
-            if(verticalVelocity < 0)
-            {
-                animator.SetBool("Kneel", true);
-            }
-            else
-            {
-                animator.SetBool("Kneel", false);
-            }
-
-
-            //Le saut
-            if (Input.GetButtonDown("Jump") && isGrounded)
-            {
-                Jump();
-            }
-
-
-            //Attack
-            if (Input.GetButtonDown("Fire1"))
-            {
-                Attack();
-            }
-
-            if (Input.GetButtonDown("Fire2") && bombsScript.nbrBombs > 0)
-            {
-                DropBombs();
-                
-            }
+        verticalVelocity = Input.GetAxisRaw("Vertical");
+        //A Genoux
+        if (verticalVelocity < 0)
+        {
+            animator.SetBool("Kneel", true);
+        }
+        else
+        {
+            animator.SetBool("Kneel", false);
+        }
 
 
 
-            //knockback droite et gauche
-            if (knockBackCount <= 0)
+
+        //Le saut
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+            Jump();
+        }
+
+
+        //Attack
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Attack();
+        }
+
+        if (Input.GetButtonDown("Fire2") && bombsScript.nbrBombs > 0)
+        {
+            DropBombs();
+
+        }
+
+        //Les cordes clics sur la roulette de la souris (fire3)
+        if (Input.GetButtonDown("Fire3") || Input.GetKeyDown(KeyCode.R))
+        {
+            TriggerRopes();
+        }
+
+        //Conditions cordes
+        //Si tu touche pas le sol + bool is rope est true (Trigger enter en bas de page) + tu appuie sur haut du joystick ou la touche Z
+        if (!isGrounded && isRope && verticalVelocity > 0)
+        {
+            //Le float verticalVelocity init a 0 prend une valeur positive
+            rbr2d.velocity = new Vector2(0, climbSpeed);
+            //Trigger l'annimation bool Climb de animator
+            animator.SetBool("Climb", true);
+        }
+        else
+        {
+            isRope = false;
+            animator.SetBool("Climb", false);
+        }
+
+
+        //knockback droite et gauche
+        if (knockBackCount <= 0)
+        {
+            rbr2d.velocity = new Vector2(rbr2d.velocity.x, rbr2d.velocity.y);
+        }
+        else
+        {
+            if (knockFromRight)
             {
-                rbr2d.velocity = new Vector2(rbr2d.velocity.x, rbr2d.velocity.y);
+                rbr2d.velocity = new Vector2(-knockBack, knockBack);
             }
-            else
+            if (!knockFromRight)
             {
-                if (knockFromRight)
-                {
-                    rbr2d.velocity = new Vector2(-knockBack, knockBack);
-                }
-                if (!knockFromRight)
-                {
-                    rbr2d.velocity = new Vector2(knockBack, knockBack);
-                }
-                knockBackCount -= Time.deltaTime;
+                rbr2d.velocity = new Vector2(knockBack, knockBack);
             }
-        
+            knockBackCount -= Time.deltaTime;
+        }
+
 
         animator.SetFloat("Speed", Mathf.Abs(rbr2d.velocity.x));
     }
@@ -164,7 +192,7 @@ public class PlayerMoves : MonoBehaviour
     {
         if (isFacingRight)
         {
-         
+
             Instantiate(bombs, new Vector2(transform.position.x + 1f, transform.position.y), Quaternion.identity);
             bombs.transform.Translate(Vector2.right * moveSpeed * Time.deltaTime);
             bombsScript.nbrBombs--;
@@ -177,6 +205,15 @@ public class PlayerMoves : MonoBehaviour
             bombsScript.nbrBombs--;
         }
 
+    }
+
+    void TriggerRopes()
+    {
+        Instantiate(ropes, new Vector3(transform.position.x, transform.position.y + 5f, transform.position.z), Quaternion.identity);
+        if (ropesSound)
+        {
+            AudioSource.PlayClipAtPoint(ropesSound, transform.position);
+        }
     }
 
     void FlipSprites()
@@ -216,6 +253,11 @@ public class PlayerMoves : MonoBehaviour
         {
             this.transform.parent = cible.transform;
         }
+        //Ropes
+        if (cible.CompareTag("Ropes"))
+        {
+            isRope = true;
+        }
     }
 
     //Trigger STAY : colle au plateforme qui bouge
@@ -232,6 +274,11 @@ public class PlayerMoves : MonoBehaviour
         if (cible.tag == "PlateForme")
         {
             this.transform.parent = null;
+        }
+        //Ropes
+        if (cible.CompareTag("Ropes"))
+        {
+            isRope = false;
         }
     }
 
